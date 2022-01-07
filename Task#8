@@ -1,1 +1,341 @@
-# Sergienko
+# Задача 1: Реализовать класс «Дата», функция-конструктор которого должна принимать дату в виде строки формата «день-месяц-год».
+#В рамках класса реализовать два метода.
+# Первый, с декоратором @classmethod, должен извлекать число, месяц, год и преобразовывать их тип к типу «Число».
+# Второй, с декоратором @staticmethod, должен проводить валидацию числа, месяца и года (например, месяц — от 1 до 12).
+# Проверить работу полученной структуры на реальных данных.
+class Date:
+    date: str
+    def __init__(self, date):
+        self.date = date
+
+    @classmethod
+    def dd1(cls, self):
+        d = int(self.date[0:2])
+        m = int(self.date[3:5])
+        y = int(self.date[6:10])
+        return Date.valid(d, m, y)
+
+    @staticmethod
+    def valid(d, m, y):
+        if 0 < d < 32:
+            if 0 < m < 13:
+                if 0 < y < 2022:
+                    return f'Day: {d}\nMonth: {m}\nYear: {y}'
+
+
+d1 = Date("31-03-2021")
+print(Date.dd1(d1))
+
+# Задача 2: Создайте собственный класс-исключение, обрабатывающий ситуацию деления на нуль.
+# Проверьте его работу на данных, вводимых пользователем.
+# При вводе пользователем нуля в качестве делителя программа должна корректно обработать эту ситуацию и не завершиться с ошибкой.
+class ZeroDivisionError(Exception):
+    def __str__(self):
+        return f'На ноль делить нельзя!'
+class Del:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def dell(self):
+        if self.y == 0:
+            raise ZeroDivisionError
+        else:
+            return self.x/self.y
+d = Del(5, 0)
+try:
+    print(d.dell())
+except ZeroDivisionError as exeption:
+    print("На ноль делить нельзя!")
+    
+# Задача 3:  Создайте собственный класс-исключение, который должен проверять содержимое списка на наличие только чисел.
+# Проверить работу исключения на реальном примере.
+# Необходимо запрашивать у пользователя данные и заполнять список только числами.
+# Класс-исключение должен контролировать типы данных элементов списка.
+#   Примечание: длина списка не фиксирована.
+# Элементы запрашиваются бесконечно, пока пользователь сам не остановит работу скрипта, введя, например, команду “stop”.
+# При этом скрипт завершается, сформированный список с числами выводится на экран.
+#   Подсказка: для данного задания примем, что пользователь может вводить только числа и строки.
+# При вводе пользователем очередного элемента необходимо реализовать проверку типа элемента и вносить его в список,
+# только если введено число.
+# Класс-исключение должен не позволить пользователю ввести текст (не число) и отобразить соответствующее сообщение.
+# При этом работа скрипта не должна завершаться.
+class Error:
+    def __init__(self, *args):
+        self.my_list = []
+
+    def mylist(self):
+        while True:
+            try:
+                val = int(input('Введите значения: '))
+                self.my_list.append(val)
+                print(f'Текущий список: {self.my_list} \n ')
+            except:
+                print(f"Вы ввели не число!")
+                stop = input(f'Попробовать еще раз? "stop" для выхода из программы, введите любой символ, чтобы продолжить.')
+
+                if stop == 'stop':
+                    return f'Вы вышли'
+                else:
+                    print(try_except.mylist())
+
+
+try_except = Error(1)
+print(try_except.mylist())
+
+# Задача 4: Начните работу над проектом «Склад оргтехники».
+# Создайте класс, описывающий склад.
+# А также класс «Оргтехника», который будет базовым для классов-наследников.
+# Эти классы — конкретные типы оргтехники (принтер, сканер, ксерокс).
+# В базовом классе определить параметры, общие для приведенных типов.
+# В классах-наследниках реализовать параметры, уникальные для каждого типа оргтехники.
+class OfficeEquipment:
+    model: str
+    price: int
+    def __init__(self, model, price):
+        self.model = model
+        self.price = price
+
+
+class Printer(OfficeEquipment):
+    model = 'printer001'
+    common_price = 5000
+    printing_technology = 'laser'
+
+
+
+class Scanner(OfficeEquipment):
+    model = 'scanner001'
+    common_price = 3000
+    scanner_type = 'flatbed type'
+
+
+class Copier(OfficeEquipment):
+    model = 'copier006'
+    common_price = 4000
+    copier_type = 'digital-type'
+
+class Stock:
+    max_count: int
+    printers: list
+    scanner: list
+    copier: list
+    
+# Задача 5: Продолжить работу над первым заданием.
+# Разработать методы, отвечающие за приём оргтехники на склад и передачу в определенное подразделение компании.
+# Для хранения данных о наименовании и количестве единиц оргтехники, а также других данных,
+# можно использовать любую подходящую структуру, например словарь.
+from abc import ABC, abstractmethod
+class OfficeEquipment(ABC):
+    model: str
+    price: int
+
+    @abstractmethod
+    def build(self, count):
+        pass
+
+
+class Printer(OfficeEquipment):
+    model = 'printer001'
+    price = 5000
+    printing_technology = 'laser'
+    def build(self):
+        printers = []
+        count = 1
+        for x in range(count):
+            printers.append([Printer.model, Printer.price])
+        return printers
+
+
+class Scanner(OfficeEquipment):
+    model = 'scanner012'
+    price = 3000
+    scanner_type = 'flatbed type'
+    def build(self):
+        count = 1
+        scanners = []
+        for x in range(count):
+            scanners.append([Scanner.model, Scanner.price])
+        return scanners
+
+
+class Copier(OfficeEquipment):
+    model = 'copier006'
+    price = 4000
+    copier_type = 'digital-type'
+    def build(self):
+        count = 1
+        copiers = []
+        for x in range(count):
+            copiers.append([Copier.model, Copier.price])
+        return copiers
+
+
+class Stock(Copier, Scanner, Printer):
+    max_count: int
+    printers: list
+    scanners: list
+    copiers: list
+    def __init__(self, count = 10):
+        self.max_count = count
+        self.printers = []
+        self.scanners = []
+        self.copiers = []
+
+    @classmethod
+    def store(self, printers: Printer, scanners: Scanner, copiers: Copier):
+        printers.extend(printers)
+        scanners.extend(scanners)
+        copiers.extend(copiers)
+        return f'{printers}, {scanners}, {copiers}'
+
+
+class Office(Stock):
+    money: int
+    office_equipment: list
+
+    def buy_p(self, printers: Printer, scanners: Scanner, copiers: Copier):
+        super().store(printers, scanners, copiers)
+        printers.extend(printers)
+        scanners.extend(scanners)
+        copiers.extend(copiers)
+        return f'{printers}, {scanners}, {copiers}'
+
+
+printer = Printer()
+scanner = Scanner()
+copier = Copier()
+stock = Stock(10) #вместимость склада
+printer_list = printer.build() #создать принтеры
+scanner_list = scanner.build()
+copier_list = copier.build()
+#stock.store(printer_list, scanner_list, copier_list)#размещение списка принтеров
+print(Stock.store(printer_list, scanner_list, copier_list))
+office = Office(15000)
+print(Office.buy_p(printer_list, scanner_list, copier_list))
+
+# Задача 6: Продолжить работу над вторым заданием.
+# Реализуйте механизм валидации вводимых пользователем данных.
+# Например, для указания количества принтеров, отправленных на склад, нельзя использовать строковый тип данных.
+# Подсказка: постарайтесь по возможности реализовать в проекте «Склад оргтехники» максимум возможностей,
+# изученных на уроках по ООП.
+from abc import ABC, abstractmethod
+class OfficeEquipment(ABC):
+    model: str
+    price: int
+
+    @abstractmethod
+    def build(self, count):
+        pass
+
+
+class Printer(OfficeEquipment):
+    model = 'printer001'
+    price = 5000
+    printing_technology = 'laser'
+    def build(self):
+        printers = []
+        count = 1
+        for x in range(count):
+            printers.append([Printer.model, Printer.price])
+        return printers
+
+
+class Scanner(OfficeEquipment):
+    model = 'scanner012'
+    price = 3000
+    scanner_type = 'flatbed type'
+    def build(self):
+        count = 1
+        scanners = []
+        for x in range(count):
+            scanners.append([Scanner.model, Scanner.price])
+        return scanners
+
+
+class Copier(OfficeEquipment):
+    model = 'copier006'
+    price = 4000
+    copier_type = 'digital-type'
+    def build(self):
+        count = 1
+        copiers = []
+        for x in range(count):
+            copiers.append([Copier.model, Copier.price])
+        return copiers
+
+
+class Stock(Copier, Scanner, Printer):
+    max_count: int
+    printers: list
+    scanners: list
+    copiers: list
+    def __init__(self, count):
+        self.max_count = count
+        self.printers = []
+        self.scanners = []
+        self.copiers = []
+
+    @classmethod
+    def store(self, printers: Printer, scanners: Scanner, copiers: Copier):
+        if len(printers) + len(scanners) + len(copiers) < self.max_count:
+            f'Stock fool!'
+        else:
+            printers.extend(printers)
+            scanners.extend(scanners)
+            copiers.extend(copiers)
+        return f'{printers}, {scanners}, {copiers}'
+
+
+class Office(Stock):
+    money: int
+    office_equipment: list
+
+    # def buy_p(self, printers: Printer, scanners: Scanner, copiers: Copier):
+    #     super().store(printers, scanners, copiers)
+    #     printers.extend(printers)
+    #     scanners.extend(scanners)
+    #     copiers.extend(copiers)
+    #     return f'{printers}, {scanners}, {copiers}'
+
+
+printer = Printer()
+scanner = Scanner()
+copier = Copier()
+stock = Stock(5) #вместимость склада
+printer_list = printer.build() #создать принтеры
+scanner_list = scanner.build()
+copier_list = copier.build()
+#stock.store(printer_list, scanner_list, copier_list)#размещение списка принтеров
+print(Stock.store(printer_list, scanner_list, copier_list))
+# office = Office(15000)
+# print(Office.buy_p(printer_list, scanner_list, copier_list))
+
+# Задача 7: Реализовать проект «Операции с комплексными числами».
+# Создайте класс «Комплексное число»,
+# реализуйте перегрузку методов сложения и умножения комплексных чисел.
+# Проверьте работу проекта, создав экземпляры класса (комплексные числа)
+# и выполнив сложение и умножение созданных экземпляров.
+# Проверьте корректность полученного результата.
+class ComplexNumber:
+    def __init__(self, x, y, *args):
+        self.x1 = x
+        self.x2 = y
+
+    def __add__(self, other):
+        print(f'Сложение комплексных чисел')
+        return f'x = {self.x1 + other.x1} + {self.x2 + other.x2} * i'
+
+    def __mul__(self, other):
+        print(f'Умножение комплексных чисел')
+        return f'x = {self.x1 * other.x1 - (self.x2 * other.x2)} + {self.x2 * other.x1} * i'
+
+    def __str__(self):
+        return f'x = {self.x1} + {self.x2} * i'
+
+
+x1 = ComplexNumber(1, -2)
+x2 = ComplexNumber(3, 4)
+print(x1 + x2)
+print(x1 * x2)
+
